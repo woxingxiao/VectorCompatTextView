@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.xw.sample.vectorcompattextview.MainActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:text="The following icons are all Vector drawable (svg) resources."
+        android:textColor="?android:textColorPrimary"
+        android:textSize="18dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="16dp"
+        android:text="drawable left"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:orientation="horizontal">
+
+        <com.xw.repo.VectorCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="GitHub"
+            android:textSize="16sp"
+            app:drawableLeftCompat="@drawable/svg_ic_github"/>
+
+        <com.xw.repo.VectorCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="微博"
+            android:textSize="16sp"
+            app:drawableLeftCompat="@drawable/svg_ic_weibo"/>
+
+        <com.xw.repo.VectorCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="微信"
+            android:textSize="16sp"
+            app:drawableLeftCompat="@drawable/svg_ic_wechat"/>
+
+        <com.xw.repo.VectorCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="twitter"
+            android:textSize="16sp"
+            app:drawableLeftCompat="@drawable/svg_ic_twitter"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="drawable top, tint drawable in text color"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_stroke_bg_gray"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:paddingBottom="4dp"
+        android:paddingTop="2dp">
+
+        <com.xw.repo.VectorCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="微信"
+            android:textColor="@color/color_gray"
+            app:drawableTopCompat="@drawable/svg_ic_wx"
+            app:tintDrawableInTextColor="true"/>
+
+        <com.xw.repo.VectorCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="通讯录"
+            android:textColor="#09bb07"
+            app:drawableTopCompat="@drawable/svg_ic_txl"
+            app:tintDrawableInTextColor="true"/>
+
+        <com.xw.repo.VectorCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="发现"
+            android:textColor="@color/color_gray"
+            app:drawableTopCompat="@drawable/svg_ic_fx"
+            app:tintDrawableInTextColor="true"/>
+
+        <com.xw.repo.VectorCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="2dp"
+            android:gravity="center"
+            android:text="我"
+            android:textColor="@color/color_gray"
+            app:drawableTopCompat="@drawable/svg_ic_w"
+            app:tintDrawableInTextColor="true"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="drawable right, tint drawable in text color"/>
+
+    <com.xw.repo.VectorCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_gray_light"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:text="Next"
+        android:textSize="16sp"
+        app:drawableRightCompat="@drawable/svg_ic_arrow_right"
+        app:tintDrawableInTextColor="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="drawable bottom, tint drawable in text color"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:orientation="horizontal">
+
+        <com.xw.repo.VectorCompatTextView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/shape_round_stroke_bg_red"
+            android:gravity="center"
+            android:padding="4dp"
+            android:text="ON"
+            android:textColor="@color/color_red"
+            android:textStyle="bold"
+            app:drawableBottomCompat="@drawable/svg_ic_line"/>
+
+        <com.xw.repo.VectorCompatTextView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="16dp"
+            android:background="@drawable/shape_round_stroke_bg_gray"
+            android:gravity="center"
+            android:padding="4dp"
+            android:text="OFF"
+            android:textColor="@color/color_gray"
+            android:textStyle="bold"
+            app:drawableBottomCompat="@drawable/svg_ic_line"
+            app:tintDrawableInTextColor="true"/>
+    </LinearLayout>
+</LinearLayout>
