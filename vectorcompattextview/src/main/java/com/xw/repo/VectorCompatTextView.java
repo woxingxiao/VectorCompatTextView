@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
@@ -52,13 +52,13 @@ public class VectorCompatTextView extends AppCompatTextView {
                 int dbId = a.getResourceId(R.styleable.VectorCompatTextView_drawableBottomCompat, -1);
 
                 if (dlId != -1)
-                    dl = AppCompatResources.getDrawable(context, dlId);
+                    dl = ContextCompat.getDrawable(context, dlId);
                 if (dtId != -1)
-                    dt = AppCompatResources.getDrawable(context, dtId);
+                    dt = ContextCompat.getDrawable(context, dtId);
                 if (drId != -1)
-                    dr = AppCompatResources.getDrawable(context, drId);
+                    dr = ContextCompat.getDrawable(context, drId);
                 if (dbId != -1)
-                    db = AppCompatResources.getDrawable(context, dbId);
+                    db = ContextCompat.getDrawable(context, dbId);
             }
 
             boolean isTint = a.getBoolean(R.styleable.VectorCompatTextView_tintDrawableInTextColor, false);
