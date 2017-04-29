@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.AppCompatTextView;
@@ -17,6 +18,8 @@ import com.xw.repo.vectorcompattextview.R;
  * Created by woxingxiao on 2017-03-19.
  */
 public class VectorCompatTextView extends AppCompatTextView {
+
+    private boolean isTintDrawableInTextColor;
 
     public VectorCompatTextView(Context context) {
         this(context, null);
@@ -61,14 +64,14 @@ public class VectorCompatTextView extends AppCompatTextView {
                     db = ContextCompat.getDrawable(context, dbId);
             }
 
-            boolean isTint = a.getBoolean(R.styleable.VectorCompatTextView_tintDrawableInTextColor, false);
-            if (isTint && dl != null)
+            isTintDrawableInTextColor = a.getBoolean(R.styleable.VectorCompatTextView_tintDrawableInTextColor, false);
+            if (isTintDrawableInTextColor && dl != null)
                 DrawableCompat.setTint(dl, getCurrentTextColor());
-            if (isTint && dt != null)
+            if (isTintDrawableInTextColor && dt != null)
                 DrawableCompat.setTint(dt, getCurrentTextColor());
-            if (isTint && dr != null)
+            if (isTintDrawableInTextColor && dr != null)
                 DrawableCompat.setTint(dr, getCurrentTextColor());
-            if (isTint && db != null)
+            if (isTintDrawableInTextColor && db != null)
                 DrawableCompat.setTint(db, getCurrentTextColor());
 
             setCompoundDrawablesWithIntrinsicBounds(dl, dt, dr, db);
@@ -77,4 +80,33 @@ public class VectorCompatTextView extends AppCompatTextView {
         }
     }
 
+    @Override
+    public void setTextColor(@ColorInt int color) {
+        super.setTextColor(color);
+
+        Drawable[] drawables = getCompoundDrawables();
+        Drawable dl = drawables[0];
+        Drawable dt = drawables[1];
+        Drawable dr = drawables[2];
+        Drawable db = drawables[3];
+
+        if (isTintDrawableInTextColor && dl != null)
+            DrawableCompat.setTint(dl, getCurrentTextColor());
+        if (isTintDrawableInTextColor && dt != null)
+            DrawableCompat.setTint(dt, getCurrentTextColor());
+        if (isTintDrawableInTextColor && dr != null)
+            DrawableCompat.setTint(dr, getCurrentTextColor());
+        if (isTintDrawableInTextColor && db != null)
+            DrawableCompat.setTint(db, getCurrentTextColor());
+
+        setCompoundDrawablesWithIntrinsicBounds(dl, dt, dr, db);
+    }
+
+    public boolean isTintDrawableInTextColor() {
+        return isTintDrawableInTextColor;
+    }
+
+    public void setTintDrawableInTextColor(boolean tintDrawableInTextColor) {
+        isTintDrawableInTextColor = tintDrawableInTextColor;
+    }
 }

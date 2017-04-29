@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 25
-        versionCode 2
-        versionName "1.1"
+        versionCode 3
+        versionName "1.2"
 
     }
     buildTypes {
@@ -20,5 +20,5 @@ android {
 }
 
 dependencies {
-    provided 'com.android.support:appcompat-v7:25.3.0'
+    provided 'com.android.support:appcompat-v7:25.3.1'
 }
