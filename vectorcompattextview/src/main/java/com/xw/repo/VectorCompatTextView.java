@@ -20,6 +20,7 @@ import com.xw.repo.vectorcompattextview.R;
 public class VectorCompatTextView extends AppCompatTextView {
 
     private boolean isTintDrawableInTextColor;
+    private int mDrawableCompatColor;
 
     public VectorCompatTextView(Context context) {
         this(context, null);
@@ -65,14 +66,36 @@ public class VectorCompatTextView extends AppCompatTextView {
             }
 
             isTintDrawableInTextColor = a.getBoolean(R.styleable.VectorCompatTextView_tintDrawableInTextColor, false);
-            if (isTintDrawableInTextColor && dl != null)
-                DrawableCompat.setTint(dl, getCurrentTextColor());
-            if (isTintDrawableInTextColor && dt != null)
-                DrawableCompat.setTint(dt, getCurrentTextColor());
-            if (isTintDrawableInTextColor && dr != null)
-                DrawableCompat.setTint(dr, getCurrentTextColor());
-            if (isTintDrawableInTextColor && db != null)
-                DrawableCompat.setTint(db, getCurrentTextColor());
+            mDrawableCompatColor = a.getColor(R.styleable.VectorCompatTextView_drawableCompatColor, 0);
+
+            if (dl != null) {
+                if (isTintDrawableInTextColor) {
+                    DrawableCompat.setTint(dl, getCurrentTextColor());
+                } else if (mDrawableCompatColor != 0) {
+                    DrawableCompat.setTint(dl, mDrawableCompatColor);
+                }
+            }
+            if (dt != null) {
+                if (isTintDrawableInTextColor) {
+                    DrawableCompat.setTint(dt, getCurrentTextColor());
+                } else if (mDrawableCompatColor != 0) {
+                    DrawableCompat.setTint(dt, mDrawableCompatColor);
+                }
+            }
+            if (dr != null) {
+                if (isTintDrawableInTextColor) {
+                    DrawableCompat.setTint(dr, getCurrentTextColor());
+                } else if (mDrawableCompatColor != 0) {
+                    DrawableCompat.setTint(dr, mDrawableCompatColor);
+                }
+            }
+            if (db != null) {
+                if (isTintDrawableInTextColor) {
+                    DrawableCompat.setTint(db, getCurrentTextColor());
+                } else if (mDrawableCompatColor != 0) {
+                    DrawableCompat.setTint(db, mDrawableCompatColor);
+                }
+            }
 
             setCompoundDrawablesWithIntrinsicBounds(dl, dt, dr, db);
 
@@ -84,20 +107,44 @@ public class VectorCompatTextView extends AppCompatTextView {
     public void setTextColor(@ColorInt int color) {
         super.setTextColor(color);
 
+        refreshCompoundDrawables();
+    }
+
+    private void refreshCompoundDrawables() {
         Drawable[] drawables = getCompoundDrawables();
         Drawable dl = drawables[0];
         Drawable dt = drawables[1];
         Drawable dr = drawables[2];
         Drawable db = drawables[3];
 
-        if (isTintDrawableInTextColor && dl != null)
-            DrawableCompat.setTint(dl, getCurrentTextColor());
-        if (isTintDrawableInTextColor && dt != null)
-            DrawableCompat.setTint(dt, getCurrentTextColor());
-        if (isTintDrawableInTextColor && dr != null)
-            DrawableCompat.setTint(dr, getCurrentTextColor());
-        if (isTintDrawableInTextColor && db != null)
-            DrawableCompat.setTint(db, getCurrentTextColor());
+        if (dl != null) {
+            if (isTintDrawableInTextColor) {
+                DrawableCompat.setTint(dl, getCurrentTextColor());
+            } else if (mDrawableCompatColor != 0) {
+                DrawableCompat.setTint(dl, mDrawableCompatColor);
+            }
+        }
+        if (dt != null) {
+            if (isTintDrawableInTextColor) {
+                DrawableCompat.setTint(dt, getCurrentTextColor());
+            } else if (mDrawableCompatColor != 0) {
+                DrawableCompat.setTint(dt, mDrawableCompatColor);
+            }
+        }
+        if (dr != null) {
+            if (isTintDrawableInTextColor) {
+                DrawableCompat.setTint(dr, getCurrentTextColor());
+            } else if (mDrawableCompatColor != 0) {
+                DrawableCompat.setTint(dr, mDrawableCompatColor);
+            }
+        }
+        if (db != null) {
+            if (isTintDrawableInTextColor) {
+                DrawableCompat.setTint(db, getCurrentTextColor());
+            } else if (mDrawableCompatColor != 0) {
+                DrawableCompat.setTint(db, mDrawableCompatColor);
+            }
+        }
 
         setCompoundDrawablesWithIntrinsicBounds(dl, dt, dr, db);
     }
@@ -108,5 +155,16 @@ public class VectorCompatTextView extends AppCompatTextView {
 
     public void setTintDrawableInTextColor(boolean tintDrawableInTextColor) {
         isTintDrawableInTextColor = tintDrawableInTextColor;
+    }
+
+    public int getDrawableCompatColor() {
+        return mDrawableCompatColor;
+    }
+
+    public void setDrawableCompatColor(@ColorInt int drawableCompatColor) {
+        if (mDrawableCompatColor == drawableCompatColor)
+            return;
+
+        refreshCompoundDrawables();
     }
 }
