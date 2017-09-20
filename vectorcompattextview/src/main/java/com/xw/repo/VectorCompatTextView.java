@@ -14,7 +14,7 @@ import com.xw.repo.vectorcompattextview.R;
 
 /**
  * Compat VectorDrawable resources, which is able to use in CompoundDrawables of TextView.
- * <><p/>
+ * <p>
  * Created by woxingxiao on 2017-03-19.
  */
 public class VectorCompatTextView extends AppCompatTextView {
