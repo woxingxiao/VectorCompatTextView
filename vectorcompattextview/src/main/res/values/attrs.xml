@@ -6,6 +6,10 @@
         <attr name="drawableTopCompat" format="reference"/>
         <attr name="drawableBottomCompat" format="reference"/>
         <attr name="tintDrawableInTextColor" format="boolean"/>
-        <attr name="drawableCompatColor" format="reference|color"/>
+        <attr name="drawableCompatColor" format="color|reference"/>
+        <attr name="drawableAdjustTextWidth" format="boolean"/>
+        <attr name="drawableAdjustTextHeight" format="boolean"/>
+        <attr name="drawableWidth" format="dimension|reference"/>
+        <attr name="drawableHeight" format="dimension|reference"/>
     </declare-styleable>
 </resources>
