@@ -2,10 +2,10 @@
 [![API](https://img.shields.io/badge/API-9%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=9)
 [![License](http://img.shields.io/badge/license-MIT-green.svg?style=flat)]()
 # VectorCompatTextView
-Compatible with vector drawable(svg) usage in TextView.  
-TextView的CompoundDrawable对vector drawable（svg）矢量图使用的适配。
+Compatible vector drawable(svg), flexible size setting and tinting color for compound drawables of TextView.
+Compound drawables支持vector drawable（svg）矢量图适配，灵活的尺寸设置以及着色等功能的TextView。
 # Screenshot
-![demo1](https://github.com/woxingxiao/VectorCompatTextView/blob/master/screenshot/demo1.jpg)
+![demo2](https://github.com/woxingxiao/VectorCompatTextView/blob/master/screenshot/demo2.jpg)
 ## Download
 root project:`build.gradle`
 ```groovy
@@ -19,7 +19,7 @@ root project:`build.gradle`
 app:`build.gradle`
 ```groovy
   dependencies {
-     // e.g. compile 'com.github.woxingxiao:VectorCompatTextView:1.3'
+     // e.g. compile 'com.github.woxingxiao:VectorCompatTextView:1.5'
      compile 'com.github.woxingxiao:VectorCompatTextView:${LATEST_VERSION}'
   }
 ```
@@ -28,35 +28,39 @@ app:`build.gradle`
 <com.xw.repo.VectorCompatTextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:drawablePadding="4dp"
-    android:gravity="center_vertical"
     android:text="GitHub"
-    android:textSize="16sp"
     app:drawableLeftCompat="@drawable/svg_ic_github"/>
-```
-```xml
+
 <com.xw.repo.VectorCompatTextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color_gray_light"
-    android:gravity="center_vertical"
-    android:padding="16dp"
     android:text="Next"
-    android:textSize="16sp"
     app:drawableRightCompat="@drawable/svg_ic_arrow_right"
-    app:tintDrawableInTextColor="true"/> <!--tint-->
-```
-```xml
+    app:tintDrawableInTextColor="true"/>
+
 <com.xw.repo.VectorCompatTextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/color_gray_light"
-    android:gravity="center_vertical"
-    android:padding="16dp"
-    android:text="Next"
-    android:textSize="16sp"
-    app:drawableCompatColor="@color/color_red"
-    app:drawableRightCompat="@drawable/svg_ic_arrow_right"/>
+    android:text="ON"
+    app:drawableCompatColor="#f44336"
+    app:drawableBottomCompat="@drawable/svg_ic_line"/>
+
+<com.xw.repo.VectorCompatTextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="GitHub"
+    app:drawableAdjustTextWidth="true"
+    app:drawableTopCompat="@drawable/svg_ic_github"/>
+
+<com.xw.repo.VectorCompatTextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="GitHub"
+    app:drawableWidth="24dp"
+    app:drawableHeight="32dp"
+    app:drawableLeftCompat="@mipmap/ic_launcher"/>
 ```
+**Check the Demo for complete usage.**
+
 # LICENSE
 [MIT](https://github.com/woxingxiao/VectorCompatTextView/blob/master/LICENSE)
