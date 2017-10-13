@@ -78,6 +78,11 @@ public class VectorCompatTextView extends AppCompatTextView {
             mDrawableHeight = a.getDimensionPixelSize(R.styleable.VectorCompatTextView_drawableHeight, 0);
             a.recycle();
 
+            if (mDrawableWidth < 0)
+                mDrawableWidth = 0;
+            if (mDrawableHeight < 0)
+                mDrawableHeight = 0;
+
             tintDrawable(dl);
             tintDrawable(dt);
             tintDrawable(dr);
@@ -139,22 +144,30 @@ public class VectorCompatTextView extends AppCompatTextView {
                 int measuredWidth = getMeasuredWidth();
                 int measuredHeight = getMeasuredHeight();
                 if (isDrawableAdjustTextWidth) {
+                    int h = mDrawableHeight;
+
                     if (dt != null) {
-                        int h = measuredWidth * dt.getIntrinsicHeight() / dt.getIntrinsicWidth();
+                        if (h == 0)
+                            h = measuredWidth * dt.getIntrinsicHeight() / dt.getIntrinsicWidth();
                         dt.setBounds(0, 0, measuredWidth, h);
                     }
                     if (db != null) {
-                        int h = measuredWidth * db.getIntrinsicHeight() / db.getIntrinsicWidth();
+                        if (h == 0)
+                            h = measuredWidth * db.getIntrinsicHeight() / db.getIntrinsicWidth();
                         db.setBounds(0, 0, measuredWidth, h);
                     }
                 }
                 if (isDrawableAdjustTextHeight) {
+                    int w = mDrawableWidth;
+
                     if (dl != null) {
-                        int w = measuredHeight * dl.getIntrinsicWidth() / dl.getIntrinsicHeight();
+                        if (w == 0)
+                            w = measuredHeight * dl.getIntrinsicWidth() / dl.getIntrinsicHeight();
                         dl.setBounds(0, 0, w, measuredHeight);
                     }
                     if (dr != null) {
-                        int w = measuredHeight * dr.getIntrinsicWidth() / dr.getIntrinsicHeight();
+                        if (w == 0)
+                            w = measuredHeight * dr.getIntrinsicWidth() / dr.getIntrinsicHeight();
                         dr.setBounds(0, 0, w, measuredHeight);
                     }
                 }
