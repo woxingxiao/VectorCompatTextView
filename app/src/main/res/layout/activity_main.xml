@@ -147,33 +147,16 @@
             android:layout_marginTop="16dp"
             android:text="drawable bottom, tint drawable in text color"/>
 
-        <LinearLayout
+        <com.xw.repo.VectorCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.xw.repo.VectorCompatTextView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:padding="4dp"
-                android:text="ON"
-                android:textColor="@color/color_red"
-                android:textStyle="bold"
-                app:drawableBottomCompat="@drawable/svg_ic_line"/>
-
-            <com.xw.repo.VectorCompatTextView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="16dp"
-                android:gravity="center"
-                android:padding="4dp"
-                android:text="OFF"
-                android:textColor="@color/color_gray"
-                android:textStyle="bold"
-                app:drawableBottomCompat="@drawable/svg_ic_line"
-                app:tintDrawableInTextColor="true"/>
-        </LinearLayout>
+            android:gravity="center"
+            android:padding="4dp"
+            android:text="Exit"
+            android:textColor="@color/color_green"
+            android:textStyle="bold"
+            app:drawableBottomCompat="@drawable/svg_ic_right"
+            app:tintDrawableInTextColor="true"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -261,11 +244,38 @@
                 android:layout_marginLeft="16dp"
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
-                android:text="GitHub"
+                android:text="Android"
                 android:textSize="18sp"
                 app:drawableHeight="32dp"
                 app:drawableLeftCompat="@mipmap/ic_launcher"
                 app:drawableWidth="24dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <com.xw.repo.VectorCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:text="评论"
+                android:textColor="@color/color_gray"
+                app:drawableAdjustTextHeight="true"
+                app:drawableLeftCompat="@drawable/shape_rect_solid_red"
+                app:drawableWidth="4dp"/>
+
+            <com.xw.repo.VectorCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:drawablePadding="4dp"
+                android:text="SELECTED TAB"
+                app:drawableAdjustTextWidth="true"
+                app:drawableBottomCompat="@drawable/shape_rect_solid_red"
+                app:drawableHeight="2dp"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

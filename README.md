@@ -5,7 +5,7 @@
 Compatible vector drawable(svg), flexible size setting and tinting color for compound drawables of TextView.
 Compound drawables支持vector drawable（svg）矢量图适配，灵活的尺寸设置以及着色等功能的TextView。
 # Screenshot
-![demo2](https://github.com/woxingxiao/VectorCompatTextView/blob/master/screenshot/demo2.jpg)
+![demo3](https://github.com/woxingxiao/VectorCompatTextView/blob/master/screenshot/demo3.jpg)
 ## Download
 root project:`build.gradle`
 ```groovy
@@ -19,7 +19,7 @@ root project:`build.gradle`
 app:`build.gradle`
 ```groovy
   dependencies {
-     // e.g. compile 'com.github.woxingxiao:VectorCompatTextView:1.5'
+     // e.g. compile 'com.github.woxingxiao:VectorCompatTextView:1.6'
      compile 'com.github.woxingxiao:VectorCompatTextView:${LATEST_VERSION}'
   }
 ```
@@ -59,6 +59,14 @@ app:`build.gradle`
     app:drawableWidth="24dp"
     app:drawableHeight="32dp"
     app:drawableLeftCompat="@mipmap/ic_launcher"/>
+
+<com.xw.repo.VectorCompatTextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="评论"
+    app:drawableAdjustTextHeight="true"
+    app:drawableLeftCompat="@drawable/shape_rect_solid_red"
+    app:drawableWidth="4dp"/>
 ```
 **Check the Demo for complete usage.**
 
