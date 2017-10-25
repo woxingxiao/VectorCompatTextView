@@ -2,24 +2,41 @@
 [![API](https://img.shields.io/badge/API-9%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=9)
 [![License](http://img.shields.io/badge/license-MIT-green.svg?style=flat)]()
 # VectorCompatTextView
-Compatible vector drawable(svg), flexible size setting and tinting color for compound drawables of TextView.
-Compound drawables支持vector drawable（svg）矢量图适配，灵活的尺寸设置以及着色等功能的TextView。
+- Compatible VectorDrawable(svg)
+- flexible size setting for CompoundDrawable
+- tint drawables with color
+- support StateListDrawable(mostly checked_state)
+
+---
+- 适配VectorDrawable矢量图（svg）
+- 灵活地设置CompoundDrawable的尺寸大小
+- 为CompoundDrawable着色
+- 支持StateListDrawable（主要是checked_state）
+
 # Screenshot
-![demo3](https://github.com/woxingxiao/VectorCompatTextView/blob/master/screenshot/demo3.png)
+![demo4](https://github.com/woxingxiao/VectorCompatTextView/blob/master/screenshot/demo4.jpg)
 ## Download
 root project:`build.gradle`
 ```groovy
   allprojects {
-	 repositories {
-		...
-		maven { url "https://jitpack.io" }
-	 }
+      repositories {
+          ...
+          maven { url "https://jitpack.io" }
+      }
   }
 ```
 app:`build.gradle`
 ```groovy
+  android {
+      ...
+      defaultConfig {
+          ...
+          vectorDrawables.useSupportLibrary = true  // necessarily
+      }
+  ...
+
   dependencies {
-     // e.g. compile 'com.github.woxingxiao:VectorCompatTextView:1.6'
+     // e.g. compile 'com.github.woxingxiao:VectorCompatTextView:2.0'
      compile 'com.github.woxingxiao:VectorCompatTextView:${LATEST_VERSION}'
   }
 ```
@@ -67,6 +84,17 @@ app:`build.gradle`
     app:drawableAdjustTextHeight="true"
     app:drawableLeftCompat="@drawable/shape_rect_solid_red"
     app:drawableWidth="4dp"/>
+
+<com.xw.repo.VectorCompatTextView
+    android:layout_width="120dp"
+    android:layout_height="wrap_content"
+    android:checked="true"
+    android:gravity="center"
+    android:text="SELECTED TAB"
+    android:textColor="@drawable/selector_text_color_tab"
+    app:drawableAdjustTextWidth="true"
+    app:drawableBottomCompat="@drawable/selector_drawable_tab"
+    app:drawableHeight="2dp"/>
 ```
 **Check the Demo for complete usage.**
 
