@@ -5,9 +5,9 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.content.res.AppCompatResources;
+import android.support.v7.widget.AppCompatCheckedTextView;
 import android.util.AttributeSet;
 import android.view.ViewTreeObserver;
 
@@ -18,7 +18,7 @@ import com.xw.repo.vectorcompattextview.R;
  * <p>
  * Created by woxingxiao on 2017-03-19.
  */
-public class VectorCompatTextView extends AppCompatTextView {
+public class VectorCompatTextView extends AppCompatCheckedTextView {
 
     private boolean isTintDrawableInTextColor;
     private int mDrawableCompatColor;
@@ -61,13 +61,13 @@ public class VectorCompatTextView extends AppCompatTextView {
                 int dbId = a.getResourceId(R.styleable.VectorCompatTextView_drawableBottomCompat, -1);
 
                 if (dlId != -1)
-                    dl = ContextCompat.getDrawable(context, dlId);
+                    dl = AppCompatResources.getDrawable(context, dlId);
                 if (dtId != -1)
-                    dt = ContextCompat.getDrawable(context, dtId);
+                    dt = AppCompatResources.getDrawable(context, dtId);
                 if (drId != -1)
-                    dr = ContextCompat.getDrawable(context, drId);
+                    dr = AppCompatResources.getDrawable(context, drId);
                 if (dbId != -1)
-                    db = ContextCompat.getDrawable(context, dbId);
+                    db = AppCompatResources.getDrawable(context, dbId);
             }
 
             isTintDrawableInTextColor = a.getBoolean(R.styleable.VectorCompatTextView_tintDrawableInTextColor, false);
@@ -83,30 +83,43 @@ public class VectorCompatTextView extends AppCompatTextView {
             if (mDrawableHeight < 0)
                 mDrawableHeight = 0;
 
-            tintDrawable(dl);
-            tintDrawable(dt);
-            tintDrawable(dr);
-            tintDrawable(db);
+            initDrawables(dl, dt, dr, db);
+        }
+    }
 
-            if (!isDrawableAdjustTextWidth && !isDrawableAdjustTextHeight && mDrawableWidth == 0
-                    && mDrawableHeight == 0) {
-                setCompoundDrawablesWithIntrinsicBounds(dl, dt, dr, db);
-            } else {
-                if (isDrawableAdjustTextWidth || isDrawableAdjustTextHeight) {
-                    boolean invalid = (isDrawableAdjustTextWidth && (dl != null || dr != null))
-                            || (isDrawableAdjustTextHeight && (dt != null || db != null));
-                    if (invalid) {
-                        if (mDrawableWidth > 0 || mDrawableHeight > 0) {
-                            resizeDrawables(dl, dt, dr, db);
-                        } else {
-                            setCompoundDrawablesWithIntrinsicBounds(dl, dt, dr, db);
-                        }
+    private void initDrawables(Drawable... drawables) {
+        for (Drawable drawable : drawables) {
+            tintDrawable(drawable);
+        }
+
+        if (!isDrawableAdjustTextWidth && !isDrawableAdjustTextHeight && mDrawableWidth == 0
+                && mDrawableHeight == 0) {
+            setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], drawables[2], drawables[3]);
+        } else {
+            if (isDrawableAdjustTextWidth || isDrawableAdjustTextHeight) {
+                boolean invalid = (isDrawableAdjustTextWidth && (drawables[0] != null || drawables[2] != null))
+                        || (isDrawableAdjustTextHeight && (drawables[1] != null || drawables[3] != null));
+                if (invalid) {
+                    if (mDrawableWidth > 0 || mDrawableHeight > 0) {
+                        resizeDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
                     } else {
-                        adjustDrawables(dl, dt, dr, db);
+                        setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], drawables[2], drawables[3]);
                     }
-                } else if (mDrawableWidth > 0 || mDrawableHeight > 0) {
-                    resizeDrawables(dl, dt, dr, db);
+                } else {
+                    adjustDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
                 }
+            } else if (mDrawableWidth > 0 || mDrawableHeight > 0) {
+                resizeDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
+            }
+        }
+    }
+
+    private void tintDrawable(Drawable drawable) {
+        if (drawable != null) {
+            if (isTintDrawableInTextColor) {
+                DrawableCompat.setTint(drawable, getCurrentTextColor());
+            } else if (mDrawableCompatColor != 0) {
+                DrawableCompat.setTint(drawable, mDrawableCompatColor);
             }
         }
     }
@@ -186,22 +199,11 @@ public class VectorCompatTextView extends AppCompatTextView {
 
     private void refreshCompoundDrawables() {
         Drawable[] drawables = getCompoundDrawables();
-        tintDrawable(drawables[0]);
-        tintDrawable(drawables[1]);
-        tintDrawable(drawables[2]);
-        tintDrawable(drawables[3]);
+        for (Drawable drawable : drawables) {
+            tintDrawable(drawable);
+        }
 
         setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
-    }
-
-    private void tintDrawable(Drawable drawable) {
-        if (drawable != null) {
-            if (isTintDrawableInTextColor) {
-                DrawableCompat.setTint(drawable, getCurrentTextColor());
-            } else if (mDrawableCompatColor != 0) {
-                DrawableCompat.setTint(drawable, mDrawableCompatColor);
-            }
-        }
     }
 
     public boolean isTintDrawableInTextColor() {
@@ -209,7 +211,11 @@ public class VectorCompatTextView extends AppCompatTextView {
     }
 
     public void setTintDrawableInTextColor(boolean tintDrawableInTextColor) {
+        if (isTintDrawableInTextColor == tintDrawableInTextColor)
+            return;
+
         isTintDrawableInTextColor = tintDrawableInTextColor;
+        refreshCompoundDrawables();
     }
 
     public int getDrawableCompatColor() {
@@ -220,7 +226,23 @@ public class VectorCompatTextView extends AppCompatTextView {
         if (mDrawableCompatColor == drawableCompatColor)
             return;
 
+        mDrawableCompatColor = drawableCompatColor;
         refreshCompoundDrawables();
     }
 
+    @Override
+    public void setChecked(boolean checked) {
+        super.setChecked(checked);
+
+        Drawable[] drawables = getCompoundDrawables();
+        initDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
+    }
+
+    @Override
+    public void toggle() {
+        super.toggle();
+
+        Drawable[] drawables = getCompoundDrawables();
+        initDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
+    }
 }
