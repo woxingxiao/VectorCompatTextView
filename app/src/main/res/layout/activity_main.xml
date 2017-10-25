@@ -37,6 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
                 android:text="微博"
@@ -47,6 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
                 android:text="微信"
@@ -57,6 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
                 android:text="twitter"
@@ -185,6 +188,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
                 android:text="GitHub"
@@ -196,6 +200,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
                 android:text="你好"
@@ -231,6 +236,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
                 android:text="GitHub"
@@ -242,6 +248,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
                 android:text="Android"
@@ -254,6 +261,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:orientation="horizontal">
 
@@ -268,14 +276,26 @@
                 app:drawableWidth="4dp"/>
 
             <com.xw.repo.VectorCompatTextView
-                android:layout_width="wrap_content"
+                android:id="@+id/checkable_text_view"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:checked="true"
                 android:drawablePadding="4dp"
+                android:gravity="center"
                 android:text="SELECTED TAB"
+                android:textColor="@drawable/selector_text_color_tab"
                 app:drawableAdjustTextWidth="true"
-                app:drawableBottomCompat="@drawable/shape_rect_solid_red"
+                app:drawableBottomCompat="@drawable/selector_drawable_tab"
                 app:drawableHeight="2dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:text="← click it"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
