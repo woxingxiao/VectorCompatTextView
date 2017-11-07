@@ -245,4 +245,25 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
         Drawable[] drawables = getCompoundDrawables();
         initDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
     }
+
+    @Override
+    protected void drawableStateChanged() {
+        super.drawableStateChanged();
+
+        if (isTintDrawableInTextColor) {
+            Drawable[] drawables = getCompoundDrawables();
+
+            boolean needRefresh = false;
+            for (Drawable drawable : drawables) {
+                if (drawable != null) {
+                    needRefresh = true;
+                    break;
+                }
+            }
+
+            if (needRefresh) {
+                refreshCompoundDrawables();
+            }
+        }
+    }
 }
