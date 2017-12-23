@@ -286,7 +286,7 @@
                 android:gravity="center"
                 android:text="SELECTED TAB"
                 android:textColor="@drawable/selector_text_color_tab"
-                app:drawableAdjustTextWidth="true"
+                app:drawableAdjustViewWidth="true"
                 app:drawableBottomCompat="@drawable/selector_drawable_tab"
                 app:drawableHeight="2dp"/>
 

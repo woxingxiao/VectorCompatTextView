@@ -2,6 +2,8 @@ package com.xw.repo;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
@@ -24,6 +26,8 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
     private int mDrawableCompatColor;
     private boolean isDrawableAdjustTextWidth;
     private boolean isDrawableAdjustTextHeight;
+    private boolean isDrawableAdjustViewWidth;
+    private boolean isDrawableAdjustViewHeight;
     private int mDrawableWidth;
     private int mDrawableHeight;
 
@@ -74,6 +78,8 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
             mDrawableCompatColor = a.getColor(R.styleable.VectorCompatTextView_drawableCompatColor, 0);
             isDrawableAdjustTextWidth = a.getBoolean(R.styleable.VectorCompatTextView_drawableAdjustTextWidth, false);
             isDrawableAdjustTextHeight = a.getBoolean(R.styleable.VectorCompatTextView_drawableAdjustTextHeight, false);
+            isDrawableAdjustViewWidth = a.getBoolean(R.styleable.VectorCompatTextView_drawableAdjustViewWidth, false);
+            isDrawableAdjustViewHeight = a.getBoolean(R.styleable.VectorCompatTextView_drawableAdjustViewHeight, false);
             mDrawableWidth = a.getDimensionPixelSize(R.styleable.VectorCompatTextView_drawableWidth, 0);
             mDrawableHeight = a.getDimensionPixelSize(R.styleable.VectorCompatTextView_drawableHeight, 0);
             a.recycle();
@@ -82,6 +88,10 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
                 mDrawableWidth = 0;
             if (mDrawableHeight < 0)
                 mDrawableHeight = 0;
+            if (isDrawableAdjustTextWidth)
+                isDrawableAdjustViewWidth = false;
+            if (isDrawableAdjustTextHeight)
+                isDrawableAdjustViewHeight = false;
 
             initDrawables(dl, dt, dr, db);
         }
@@ -92,13 +102,18 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
             tintDrawable(drawable);
         }
 
-        if (!isDrawableAdjustTextWidth && !isDrawableAdjustTextHeight && mDrawableWidth == 0
-                && mDrawableHeight == 0) {
+        if (!isDrawableAdjustTextWidth && !isDrawableAdjustTextHeight && !isDrawableAdjustViewWidth &&
+                !isDrawableAdjustViewHeight && mDrawableWidth == 0 && mDrawableHeight == 0) {
             setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], drawables[2], drawables[3]);
         } else {
-            if (isDrawableAdjustTextWidth || isDrawableAdjustTextHeight) {
-                boolean invalid = (isDrawableAdjustTextWidth && (drawables[0] != null || drawables[2] != null))
-                        || (isDrawableAdjustTextHeight && (drawables[1] != null || drawables[3] != null));
+            if (isDrawableAdjustTextWidth || isDrawableAdjustTextHeight || isDrawableAdjustViewWidth ||
+                    isDrawableAdjustViewHeight) {
+                boolean invalid = (
+                        (isDrawableAdjustTextWidth || isDrawableAdjustViewWidth) &&
+                                (drawables[0] != null || drawables[2] != null))
+                        ||
+                        ((isDrawableAdjustTextHeight || isDrawableAdjustViewHeight)
+                                && (drawables[1] != null || drawables[3] != null));
                 if (invalid) {
                     if (mDrawableWidth > 0 || mDrawableHeight > 0) {
                         resizeDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
@@ -154,35 +169,55 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
                     getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
 
-                int measuredWidth = getMeasuredWidth();
-                int measuredHeight = getMeasuredHeight();
-                if (isDrawableAdjustTextWidth) {
-                    int h = mDrawableHeight;
+                int width = 0;
+                int height = 0;
 
-                    if (dt != null) {
-                        if (h == 0)
-                            h = measuredWidth * dt.getIntrinsicHeight() / dt.getIntrinsicWidth();
-                        dt.setBounds(0, 0, measuredWidth, h);
-                    }
-                    if (db != null) {
-                        if (h == 0)
-                            h = measuredWidth * db.getIntrinsicHeight() / db.getIntrinsicWidth();
-                        db.setBounds(0, 0, measuredWidth, h);
-                    }
+                if (isDrawableAdjustTextWidth) {
+                    Paint paint = new Paint();
+                    paint.setTextSize(getTextSize());
+                    CharSequence text = getText();
+                    Rect rect = new Rect();
+                    paint.getTextBounds(text.toString(), 0, text.length(), rect);
+
+                    width = rect.width();
+                } else if (isDrawableAdjustViewWidth) {
+                    width = getMeasuredWidth();
                 }
                 if (isDrawableAdjustTextHeight) {
-                    int w = mDrawableWidth;
+                    Paint paint = new Paint();
+                    paint.setTextSize(getTextSize());
+                    CharSequence text = getText();
+                    Rect rect = new Rect();
+                    paint.getTextBounds(text.toString(), 0, text.length(), rect);
 
-                    if (dl != null) {
-                        if (w == 0)
-                            w = measuredHeight * dl.getIntrinsicWidth() / dl.getIntrinsicHeight();
-                        dl.setBounds(0, 0, w, measuredHeight);
-                    }
-                    if (dr != null) {
-                        if (w == 0)
-                            w = measuredHeight * dr.getIntrinsicWidth() / dr.getIntrinsicHeight();
-                        dr.setBounds(0, 0, w, measuredHeight);
-                    }
+                    height = rect.height();
+                } else if (isDrawableAdjustViewHeight) {
+                    height = getMeasuredHeight();
+                }
+
+                int h = mDrawableHeight;
+                int w = mDrawableWidth;
+
+                if (dt != null) {
+                    if (h == 0)
+                        h = width * dt.getIntrinsicHeight() / dt.getIntrinsicWidth();
+                    dt.setBounds(0, 0, width, h);
+                }
+                if (db != null) {
+                    if (h == 0)
+                        h = width * db.getIntrinsicHeight() / db.getIntrinsicWidth();
+                    db.setBounds(0, 0, width, h);
+                }
+
+                if (dl != null) {
+                    if (w == 0)
+                        w = height * dl.getIntrinsicWidth() / dl.getIntrinsicHeight();
+                    dl.setBounds(0, 0, w, height);
+                }
+                if (dr != null) {
+                    if (w == 0)
+                        w = height * dr.getIntrinsicWidth() / dr.getIntrinsicHeight();
+                    dr.setBounds(0, 0, w, height);
                 }
 
                 setCompoundDrawables(dl, dt, dr, db);

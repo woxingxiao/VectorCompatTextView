@@ -9,6 +9,8 @@
         <attr name="drawableCompatColor" format="color|reference"/>
         <attr name="drawableAdjustTextWidth" format="boolean"/>
         <attr name="drawableAdjustTextHeight" format="boolean"/>
+        <attr name="drawableAdjustViewWidth" format="boolean"/>
+        <attr name="drawableAdjustViewHeight" format="boolean"/>
         <attr name="drawableWidth" format="dimension|reference"/>
         <attr name="drawableHeight" format="dimension|reference"/>
     </declare-styleable>
