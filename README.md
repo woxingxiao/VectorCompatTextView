@@ -14,7 +14,7 @@
 - 支持StateListDrawable（主要是checked_state）
 
 # Screenshot
-![demo4](https://github.com/woxingxiao/VectorCompatTextView/blob/master/screenshot/demo4.jpg)
+![demo5](https://github.com/woxingxiao/VectorCompatTextView/blob/master/screenshot/demo5.jpg)
 ## Download
 root project:`build.gradle`
 ```groovy
@@ -36,7 +36,7 @@ app:`build.gradle`
   ...
 
   dependencies {
-     // e.g. compile 'com.github.woxingxiao:VectorCompatTextView:2.0'
+     // e.g. compile 'com.github.woxingxiao:VectorCompatTextView:2.3'
      compile 'com.github.woxingxiao:VectorCompatTextView:${LATEST_VERSION}'
   }
 ```
@@ -81,7 +81,7 @@ app:`build.gradle`
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="评论"
-    app:drawableAdjustTextHeight="true"
+    app:drawableAdjustTextHeight="true" <!-- text bounds -->
     app:drawableLeftCompat="@drawable/shape_rect_solid_red"
     app:drawableWidth="4dp"/>
 
@@ -92,7 +92,7 @@ app:`build.gradle`
     android:gravity="center"
     android:text="SELECTED TAB"
     android:textColor="@drawable/selector_text_color_tab"
-    app:drawableAdjustTextWidth="true"
+    app:drawableAdjustViewWidth="true" <!-- view bounds -->
     app:drawableBottomCompat="@drawable/selector_drawable_tab"
     app:drawableHeight="2dp"/>
 ```
