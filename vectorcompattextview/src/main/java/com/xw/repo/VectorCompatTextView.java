@@ -97,7 +97,7 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
         }
     }
 
-    private void initDrawables(Drawable... drawables) {
+    private void initDrawables(final Drawable... drawables) {
         for (Drawable drawable : drawables) {
             tintDrawable(drawable);
         }
@@ -121,7 +121,18 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
                         setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], drawables[2], drawables[3]);
                     }
                 } else {
-                    adjustDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
+                    getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            if (Build.VERSION.SDK_INT < 16) {
+                                getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                            } else {
+                                getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                            }
+
+                            adjustDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
+                        }
+                    });
                 }
             } else if (mDrawableWidth > 0 || mDrawableHeight > 0) {
                 resizeDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
@@ -159,70 +170,68 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
         setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
     }
 
-    private void adjustDrawables(final Drawable dl, final Drawable dt, final Drawable dr, final Drawable db) {
-        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (Build.VERSION.SDK_INT < 16) {
-                    getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                } else {
-                    getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                }
+    @Override
+    public void setText(CharSequence text, BufferType type) {
+        super.setText(text, type);
 
-                int width = 0;
-                int height = 0;
+        if (isDrawableAdjustTextWidth || isDrawableAdjustTextHeight) {
+            Drawable[] drawables = getCompoundDrawables();
+            if (drawables[0] == null && drawables[1] == null && drawables[2] == null && drawables[3] == null)
+                return;
 
-                if (isDrawableAdjustTextWidth) {
-                    Paint paint = new Paint();
-                    paint.setTextSize(getTextSize());
-                    CharSequence text = getText();
-                    Rect rect = new Rect();
-                    paint.getTextBounds(text.toString(), 0, text.length(), rect);
+            adjustDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
+        }
+    }
 
-                    width = rect.width();
-                } else if (isDrawableAdjustViewWidth) {
-                    width = getMeasuredWidth();
-                }
-                if (isDrawableAdjustTextHeight) {
-                    Paint paint = new Paint();
-                    paint.setTextSize(getTextSize());
-                    CharSequence text = getText();
-                    Rect rect = new Rect();
-                    paint.getTextBounds(text.toString(), 0, text.length(), rect);
+    private void adjustDrawables(Drawable dl, Drawable dt, Drawable dr, Drawable db) {
+        int width = 0;
+        int height = 0;
 
-                    height = rect.height();
-                } else if (isDrawableAdjustViewHeight) {
-                    height = getMeasuredHeight();
-                }
+        if (isDrawableAdjustTextWidth) {
+            Paint paint = new Paint();
+            paint.setTextSize(getTextSize());
+            CharSequence text = getText();
+            Rect rect = new Rect();
+            paint.getTextBounds(text.toString(), 0, text.length(), rect);
 
-                int h = mDrawableHeight;
-                int w = mDrawableWidth;
+            width = rect.width();
+        } else if (isDrawableAdjustViewWidth) {
+            width = getMeasuredWidth();
+        }
+        if (isDrawableAdjustTextHeight) {
+            Paint paint = new Paint();
+            paint.setTextSize(getTextSize());
+            CharSequence text = getText();
+            Rect rect = new Rect();
+            paint.getTextBounds(text.toString(), 0, text.length(), rect);
 
-                if (dt != null) {
-                    if (h == 0)
-                        h = width * dt.getIntrinsicHeight() / dt.getIntrinsicWidth();
-                    dt.setBounds(0, 0, width, h);
-                }
-                if (db != null) {
-                    if (h == 0)
-                        h = width * db.getIntrinsicHeight() / db.getIntrinsicWidth();
-                    db.setBounds(0, 0, width, h);
-                }
+            height = rect.height();
+        } else if (isDrawableAdjustViewHeight) {
+            height = getMeasuredHeight();
+        }
 
-                if (dl != null) {
-                    if (w == 0)
-                        w = height * dl.getIntrinsicWidth() / dl.getIntrinsicHeight();
-                    dl.setBounds(0, 0, w, height);
-                }
-                if (dr != null) {
-                    if (w == 0)
-                        w = height * dr.getIntrinsicWidth() / dr.getIntrinsicHeight();
-                    dr.setBounds(0, 0, w, height);
-                }
+        int h = mDrawableHeight;
+        int w = mDrawableWidth;
 
-                setCompoundDrawables(dl, dt, dr, db);
-            }
-        });
+        if (dt != null) {
+            if (h == 0) h = width * dt.getIntrinsicHeight() / dt.getIntrinsicWidth();
+            dt.setBounds(0, 0, width, h);
+        }
+        if (db != null) {
+            if (h == 0) h = width * db.getIntrinsicHeight() / db.getIntrinsicWidth();
+            db.setBounds(0, 0, width, h);
+        }
+
+        if (dl != null) {
+            if (w == 0) w = height * dl.getIntrinsicWidth() / dl.getIntrinsicHeight();
+            dl.setBounds(0, 0, w, height);
+        }
+        if (dr != null) {
+            if (w == 0) w = height * dr.getIntrinsicWidth() / dr.getIntrinsicHeight();
+            dr.setBounds(0, 0, w, height);
+        }
+
+        setCompoundDrawables(dl, dt, dr, db);
     }
 
     @Override
