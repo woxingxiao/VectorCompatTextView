@@ -142,10 +142,13 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
 
     private void tintDrawable(Drawable drawable) {
         if (drawable != null) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                drawable = DrawableCompat.wrap(drawable).mutate();
+            }
             if (isTintDrawableInTextColor) {
-                DrawableCompat.setTint(drawable.mutate(), getCurrentTextColor());
+                DrawableCompat.setTint(drawable, getCurrentTextColor());
             } else if (mDrawableCompatColor != 0) {
-                DrawableCompat.setTint(drawable.mutate(), mDrawableCompatColor);
+                DrawableCompat.setTint(drawable, mDrawableCompatColor);
             }
         }
     }
