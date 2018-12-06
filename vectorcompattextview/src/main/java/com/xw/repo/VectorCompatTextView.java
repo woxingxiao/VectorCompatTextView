@@ -49,39 +49,50 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
         if (attrs != null) {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.VectorCompatTextView);
 
-            Drawable dl = null;
+            Drawable ds = null;
             Drawable dt = null;
-            Drawable dr = null;
+            Drawable de = null;
             Drawable db = null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                dl = a.getDrawable(R.styleable.VectorCompatTextView_drawableLeftCompat);
+                ds = a.getDrawable(R.styleable.VectorCompatTextView_drawableStartCompat);
                 dt = a.getDrawable(R.styleable.VectorCompatTextView_drawableTopCompat);
-                dr = a.getDrawable(R.styleable.VectorCompatTextView_drawableRightCompat);
+                de = a.getDrawable(R.styleable.VectorCompatTextView_drawableEndCompat);
                 db = a.getDrawable(R.styleable.VectorCompatTextView_drawableBottomCompat);
             } else {
-                int dlId = a.getResourceId(R.styleable.VectorCompatTextView_drawableLeftCompat, -1);
+                int dsId = a.getResourceId(R.styleable.VectorCompatTextView_drawableStartCompat,
+                        -1);
                 int dtId = a.getResourceId(R.styleable.VectorCompatTextView_drawableTopCompat, -1);
-                int drId = a.getResourceId(R.styleable.VectorCompatTextView_drawableRightCompat, -1);
-                int dbId = a.getResourceId(R.styleable.VectorCompatTextView_drawableBottomCompat, -1);
+                int deId = a.getResourceId(R.styleable.VectorCompatTextView_drawableEndCompat,
+                        -1);
+                int dbId = a.getResourceId(R.styleable.VectorCompatTextView_drawableBottomCompat,
+                        -1);
 
-                if (dlId != -1)
-                    dl = AppCompatResources.getDrawable(context, dlId);
+                if (dsId != -1)
+                    ds = AppCompatResources.getDrawable(context, dsId);
                 if (dtId != -1)
                     dt = AppCompatResources.getDrawable(context, dtId);
-                if (drId != -1)
-                    dr = AppCompatResources.getDrawable(context, drId);
+                if (deId != -1)
+                    de = AppCompatResources.getDrawable(context, deId);
                 if (dbId != -1)
                     db = AppCompatResources.getDrawable(context, dbId);
             }
 
-            isTintDrawableInTextColor = a.getBoolean(R.styleable.VectorCompatTextView_tintDrawableInTextColor, false);
-            mDrawableCompatColor = a.getColor(R.styleable.VectorCompatTextView_drawableCompatColor, 0);
-            isDrawableAdjustTextWidth = a.getBoolean(R.styleable.VectorCompatTextView_drawableAdjustTextWidth, false);
-            isDrawableAdjustTextHeight = a.getBoolean(R.styleable.VectorCompatTextView_drawableAdjustTextHeight, false);
-            isDrawableAdjustViewWidth = a.getBoolean(R.styleable.VectorCompatTextView_drawableAdjustViewWidth, false);
-            isDrawableAdjustViewHeight = a.getBoolean(R.styleable.VectorCompatTextView_drawableAdjustViewHeight, false);
-            mDrawableWidth = a.getDimensionPixelSize(R.styleable.VectorCompatTextView_drawableWidth, 0);
-            mDrawableHeight = a.getDimensionPixelSize(R.styleable.VectorCompatTextView_drawableHeight, 0);
+            isTintDrawableInTextColor = a.getBoolean(R.styleable
+                    .VectorCompatTextView_tintDrawableInTextColor, false);
+            mDrawableCompatColor = a.getColor(R.styleable
+                    .VectorCompatTextView_drawableCompatColor, 0);
+            isDrawableAdjustTextWidth = a.getBoolean(R.styleable
+                    .VectorCompatTextView_drawableAdjustTextWidth, false);
+            isDrawableAdjustTextHeight = a.getBoolean(R.styleable
+                    .VectorCompatTextView_drawableAdjustTextHeight, false);
+            isDrawableAdjustViewWidth = a.getBoolean(R.styleable
+                    .VectorCompatTextView_drawableAdjustViewWidth, false);
+            isDrawableAdjustViewHeight = a.getBoolean(R.styleable
+                    .VectorCompatTextView_drawableAdjustViewHeight, false);
+            mDrawableWidth = a.getDimensionPixelSize(R.styleable
+                    .VectorCompatTextView_drawableWidth, 0);
+            mDrawableHeight = a.getDimensionPixelSize(R.styleable
+                    .VectorCompatTextView_drawableHeight, 0);
             a.recycle();
 
             if (mDrawableWidth < 0)
@@ -93,7 +104,7 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
             if (isDrawableAdjustTextHeight)
                 isDrawableAdjustViewHeight = false;
 
-            initDrawables(dl, dt, dr, db);
+            initDrawables(ds, dt, de, db);
         }
     }
 
@@ -104,10 +115,11 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
 
         if (!isDrawableAdjustTextWidth && !isDrawableAdjustTextHeight && !isDrawableAdjustViewWidth &&
                 !isDrawableAdjustViewHeight && mDrawableWidth == 0 && mDrawableHeight == 0) {
-            setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], drawables[2], drawables[3]);
+            setDrawables(drawables);
+
         } else {
-            if (isDrawableAdjustTextWidth || isDrawableAdjustTextHeight || isDrawableAdjustViewWidth ||
-                    isDrawableAdjustViewHeight) {
+            if (isDrawableAdjustTextWidth || isDrawableAdjustTextHeight ||
+                    isDrawableAdjustViewWidth || isDrawableAdjustViewHeight) {
                 boolean invalid = (
                         (isDrawableAdjustTextWidth || isDrawableAdjustViewWidth) &&
                                 (drawables[0] != null || drawables[2] != null))
@@ -118,10 +130,11 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
                     if (mDrawableWidth > 0 || mDrawableHeight > 0) {
                         resizeDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
                     } else {
-                        setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], drawables[2], drawables[3]);
+                        setDrawables(drawables);
                     }
                 } else {
-                    getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver
+                            .OnGlobalLayoutListener() {
                         @Override
                         public void onGlobalLayout() {
                             if (Build.VERSION.SDK_INT < 16) {
@@ -137,6 +150,20 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
             } else if (mDrawableWidth > 0 || mDrawableHeight > 0) {
                 resizeDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
             }
+        }
+    }
+
+    /**
+     * 设置drawable，api大于等于17的时候使用相对的方式
+     * @param drawables drawable数组
+     */
+    private void setDrawables(Drawable[] drawables) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1){
+            setCompoundDrawablesRelativeWithIntrinsicBounds(drawables[0], drawables[1],
+                    drawables[2], drawables[3]);
+        }else {
+            setCompoundDrawablesWithIntrinsicBounds(drawables[0], drawables[1], drawables[2],
+                    drawables[3]);
         }
     }
 
@@ -162,15 +189,17 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
             if (mDrawableWidth > 0 && mDrawableHeight > 0) {
                 drawable.setBounds(0, 0, mDrawableWidth, mDrawableHeight);
             } else if (mDrawableWidth > 0) {
-                int h = mDrawableWidth * drawable.getIntrinsicHeight() / drawable.getIntrinsicWidth();
+                int h = mDrawableWidth * drawable.getIntrinsicHeight() / drawable
+                        .getIntrinsicWidth();
                 drawable.setBounds(0, 0, mDrawableWidth, h);
             } else {
-                int w = mDrawableHeight * drawable.getIntrinsicWidth() / drawable.getIntrinsicHeight();
+                int w = mDrawableHeight * drawable.getIntrinsicWidth() / drawable
+                        .getIntrinsicHeight();
                 drawable.setBounds(0, 0, w, mDrawableHeight);
             }
         }
 
-        setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
+        setDrawables(drawables);
     }
 
     @Override
@@ -179,7 +208,8 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
 
         if (isDrawableAdjustTextWidth || isDrawableAdjustTextHeight) {
             Drawable[] drawables = getCompoundDrawables();
-            if (drawables[0] == null && drawables[1] == null && drawables[2] == null && drawables[3] == null)
+            if (drawables[0] == null && drawables[1] == null && drawables[2] == null &&
+                    drawables[3] == null)
                 return;
 
             adjustDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
@@ -234,7 +264,7 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
             dr.setBounds(0, 0, w, height);
         }
 
-        setCompoundDrawables(dl, dt, dr, db);
+        setDrawables(new Drawable[]{dl, dt, dr, db});
     }
 
     @Override
@@ -250,7 +280,7 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
             tintDrawable(drawable);
         }
 
-        setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
+        setDrawables(drawables);
     }
 
     public boolean isTintDrawableInTextColor() {
