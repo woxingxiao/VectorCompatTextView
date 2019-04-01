@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final VectorCompatTextView textView = (VectorCompatTextView) findViewById(R.id.checkable_text_view);
+        final VectorCompatTextView textView = findViewById(R.id.checkable_text_view);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
