@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="VectorCompatTextView">
+        <attr name="drawableStartCompat" format="reference"/>
+        <attr name="drawableEndCompat" format="reference"/>
         <attr name="drawableLeftCompat" format="reference"/>
         <attr name="drawableRightCompat" format="reference"/>
         <attr name="drawableTopCompat" format="reference"/>
@@ -13,5 +15,6 @@
         <attr name="drawableAdjustViewHeight" format="boolean"/>
         <attr name="drawableWidth" format="dimension|reference"/>
         <attr name="drawableHeight" format="dimension|reference"/>
+        <attr name="hideDrawable" format="boolean"/>
     </declare-styleable>
 </resources>
