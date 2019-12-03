@@ -11,8 +11,10 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.AppCompatCheckedTextView;
@@ -23,8 +25,13 @@ import android.view.ViewTreeObserver;
 import com.xw.repo.vectorcompattextview.R;
 
 /**
- * Compat VectorDrawable resources, which is able to use in CompoundDrawables of TextView.
- * <p>
+ * With this multifunctional {@code TextView}, the {@code VectorDrawable} resources can be set as
+ * {@code CompoundDrawable}s, furthermore, the majority of scenarios to modify {@code CompoundDrawable}s
+ * has been supported, such as checked state, color tinting/setting, custom size setting, visibility,
+ * RTL etc.
+ * <br>
+ * The most powerful {@code TextView} ever!
+ * <br>
  * Created by woxingxiao on 2017-03-19.
  */
 public class VectorCompatTextView extends AppCompatCheckedTextView {
@@ -43,10 +50,6 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
     private Drawable mDrawableEnd;
     private Drawable mDrawableBottom;
     boolean hideDrawable = false;
-    private InvisibleDrawable mInvisibleDrawableStart;
-    private InvisibleDrawable mInvisibleDrawableTop;
-    private InvisibleDrawable mInvisibleDrawableEnd;
-    private InvisibleDrawable mInvisibleDrawableBottom;
 
     public VectorCompatTextView(Context context) {
         this(context, null);
@@ -128,36 +131,31 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
             if (de == null)
                 mDrawableEnd = dr;
 
-            behaveDrawables();
-        }
-    }
+            boolean initHidden = hideDrawable;
+            if (initHidden) {
+                hideDrawable = false;
+            }
 
-    private void tintDrawable(Drawable drawable) {
-        if (drawable != null) {
-            if (isTintDrawableInTextColor) {
-                DrawableCompat.setTint(drawable.mutate(), getCurrentTextColor());
-            } else if (mDrawableCompatColor != 0) {
-                DrawableCompat.setTint(drawable.mutate(), mDrawableCompatColor);
+            behaveDrawables();
+
+            if (initHidden) {
+                hideDrawable = true;
+                behaveDrawables();
             }
         }
     }
 
     private void behaveDrawables(Drawable... drawables) {
-        if (drawables != null && drawables.length == 4) {
-            mDrawableStart = drawables[0];
-            mDrawableTop = drawables[1];
-            mDrawableEnd = drawables[2];
-            mDrawableBottom = drawables[3];
+        if (drawables == null || drawables.length != 4) {
+            drawables = new Drawable[]{mDrawableStart, mDrawableTop, mDrawableEnd, mDrawableBottom};
         }
-        if (drawables != null) {
-            for (Drawable drawable : drawables) {
-                tintDrawable(drawable);
-            }
+        for (Drawable drawable : drawables) {
+            tintDrawable(drawable);
         }
 
-        if (!isDrawableAdjustTextWidth && !isDrawableAdjustTextHeight && !isDrawableAdjustViewWidth &&
-                !isDrawableAdjustViewHeight && mDrawableWidth == 0 && mDrawableHeight == 0) {
-            setCompoundDrawablesInCompatibility();
+        if (!isDrawableAdjustTextWidth && !isDrawableAdjustTextHeight && !isDrawableAdjustViewWidth
+                && !isDrawableAdjustViewHeight && mDrawableWidth == 0 && mDrawableHeight == 0) {
+            compatCompoundDrawablesWithIntrinsicBounds();
             return;
         }
 
@@ -166,15 +164,15 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
                     || ((isDrawableAdjustTextHeight || isDrawableAdjustViewHeight) && (mDrawableTop != null || mDrawableBottom != null));
             if (invalid) {
                 if (mDrawableWidth > 0 || mDrawableHeight > 0) {
-                    resizeCompoundDrawablesInCompatibility();
+                    resizeCompoundDrawablesInCompatibility(drawables);
                 } else {
-                    setCompoundDrawablesInCompatibility();
+                    compatCompoundDrawablesWithIntrinsicBounds();
                 }
             } else {
                 getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-                        if (Build.VERSION.SDK_INT < 16) {
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
                             getViewTreeObserver().removeGlobalOnLayoutListener(this);
                         } else {
                             getViewTreeObserver().removeOnGlobalLayoutListener(this);
@@ -188,37 +186,21 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
         }
 
         if (mDrawableWidth > 0 || mDrawableHeight > 0) {
-            resizeCompoundDrawablesInCompatibility();
+            resizeCompoundDrawablesInCompatibility(drawables);
         }
     }
 
-    private void setCompoundDrawablesInCompatibility() {
-        if (hideDrawable) {
-            mInvisibleDrawableStart = createInvisibleDrawable(mDrawableStart);
-            mInvisibleDrawableTop = createInvisibleDrawable(mDrawableTop);
-            mInvisibleDrawableEnd = createInvisibleDrawable(mDrawableEnd);
-            mInvisibleDrawableBottom = createInvisibleDrawable(mDrawableBottom);
-
-            if (Build.VERSION.SDK_INT < 17) {
-                setCompoundDrawablesWithIntrinsicBounds(
-                        mInvisibleDrawableStart, mInvisibleDrawableTop, mInvisibleDrawableEnd, mInvisibleDrawableBottom);
-            } else {
-                setCompoundDrawablesRelativeWithIntrinsicBounds(
-                        mInvisibleDrawableStart, mInvisibleDrawableTop, mInvisibleDrawableEnd, mInvisibleDrawableBottom);
-            }
-        } else {
-            if (Build.VERSION.SDK_INT < 17) {
-                setCompoundDrawablesWithIntrinsicBounds(
-                        mDrawableStart, mDrawableTop, mDrawableEnd, mDrawableBottom);
-            } else {
-                setCompoundDrawablesRelativeWithIntrinsicBounds(
-                        mDrawableStart, mDrawableTop, mDrawableEnd, mDrawableBottom);
+    private void tintDrawable(Drawable drawable) {
+        if (drawable != null) {
+            if (isTintDrawableInTextColor) {
+                DrawableCompat.setTint(drawable.mutate(), getCurrentTextColor());
+            } else if (mDrawableCompatColor != 0) {
+                DrawableCompat.setTint(drawable.mutate(), mDrawableCompatColor);
             }
         }
     }
 
-    private void resizeCompoundDrawablesInCompatibility() {
-        Drawable[] drawables = new Drawable[]{mDrawableStart, mDrawableTop, mDrawableEnd, mDrawableBottom};
+    private void resizeCompoundDrawablesInCompatibility(Drawable[] drawables) {
         for (Drawable drawable : drawables) {
             if (drawable == null) {
                 continue;
@@ -235,26 +217,7 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
             }
         }
 
-        if (hideDrawable) {
-            mInvisibleDrawableStart = createInvisibleDrawable(mDrawableStart);
-            mInvisibleDrawableTop = createInvisibleDrawable(mDrawableTop);
-            mInvisibleDrawableEnd = createInvisibleDrawable(mDrawableEnd);
-            mInvisibleDrawableBottom = createInvisibleDrawable(mDrawableBottom);
-
-            if (Build.VERSION.SDK_INT < 17) {
-                setCompoundDrawables(
-                        mInvisibleDrawableStart, mInvisibleDrawableTop, mInvisibleDrawableEnd, mInvisibleDrawableBottom);
-            } else {
-                setCompoundDrawablesRelative(
-                        mInvisibleDrawableStart, mInvisibleDrawableTop, mInvisibleDrawableEnd, mInvisibleDrawableBottom);
-            }
-        } else {
-            if (Build.VERSION.SDK_INT < 17) {
-                setCompoundDrawables(mDrawableStart, mDrawableTop, mDrawableEnd, mDrawableBottom);
-            } else {
-                setCompoundDrawablesRelative(mDrawableStart, mDrawableTop, mDrawableEnd, mDrawableBottom);
-            }
-        }
+        compatCompoundDrawablesWithProbablyChangedBounds();
     }
 
     private void adjustCompoundDrawablesInCompatibility() {
@@ -309,21 +272,50 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
             mDrawableEnd.setBounds(0, 0, w, height);
         }
 
-        if (hideDrawable) {
-            mInvisibleDrawableStart = createInvisibleDrawable(mDrawableStart);
-            mInvisibleDrawableTop = createInvisibleDrawable(mDrawableTop);
-            mInvisibleDrawableEnd = createInvisibleDrawable(mDrawableEnd);
-            mInvisibleDrawableBottom = createInvisibleDrawable(mDrawableBottom);
+        compatCompoundDrawablesWithProbablyChangedBounds();
+    }
 
-            if (Build.VERSION.SDK_INT < 17) {
-                setCompoundDrawables(
-                        mInvisibleDrawableStart, mInvisibleDrawableTop, mInvisibleDrawableEnd, mInvisibleDrawableBottom);
+    private void compatCompoundDrawablesWithIntrinsicBounds() {
+        if (hideDrawable) {
+            InvisibleDrawable invisibleDrawableStart = createInvisibleDrawable(mDrawableStart);
+            InvisibleDrawable invisibleDrawableTop = createInvisibleDrawable(mDrawableTop);
+            InvisibleDrawable invisibleDrawableEnd = createInvisibleDrawable(mDrawableEnd);
+            InvisibleDrawable invisibleDrawableBottom = createInvisibleDrawable(mDrawableBottom);
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                setCompoundDrawablesWithIntrinsicBounds(
+                        invisibleDrawableStart, invisibleDrawableTop, invisibleDrawableEnd, invisibleDrawableBottom);
             } else {
-                setCompoundDrawablesRelative(
-                        mInvisibleDrawableStart, mInvisibleDrawableTop, mInvisibleDrawableEnd, mInvisibleDrawableBottom);
+                setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        invisibleDrawableStart, invisibleDrawableTop, invisibleDrawableEnd, invisibleDrawableBottom);
             }
         } else {
-            if (Build.VERSION.SDK_INT < 17) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                setCompoundDrawablesWithIntrinsicBounds(
+                        mDrawableStart, mDrawableTop, mDrawableEnd, mDrawableBottom);
+            } else {
+                setCompoundDrawablesRelativeWithIntrinsicBounds(
+                        mDrawableStart, mDrawableTop, mDrawableEnd, mDrawableBottom);
+            }
+        }
+    }
+
+    private void compatCompoundDrawablesWithProbablyChangedBounds() {
+        if (hideDrawable) {
+            InvisibleDrawable invisibleDrawableStart = createInvisibleDrawable(mDrawableStart);
+            InvisibleDrawable invisibleDrawableTop = createInvisibleDrawable(mDrawableTop);
+            InvisibleDrawable invisibleDrawableEnd = createInvisibleDrawable(mDrawableEnd);
+            InvisibleDrawable invisibleDrawableBottom = createInvisibleDrawable(mDrawableBottom);
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                setCompoundDrawables(
+                        invisibleDrawableStart, invisibleDrawableTop, invisibleDrawableEnd, invisibleDrawableBottom);
+            } else {
+                setCompoundDrawablesRelative(
+                        invisibleDrawableStart, invisibleDrawableTop, invisibleDrawableEnd, invisibleDrawableBottom);
+            }
+        } else {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 setCompoundDrawables(mDrawableStart, mDrawableTop, mDrawableEnd, mDrawableBottom);
             } else {
                 setCompoundDrawablesRelative(mDrawableStart, mDrawableTop, mDrawableEnd, mDrawableBottom);
@@ -342,7 +334,7 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
 
     private Drawable[] getCompoundDrawablesInCompatibility() {
         Drawable[] drawables;
-        if (Build.VERSION.SDK_INT < 17) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
             drawables = getCompoundDrawables();
         } else {
             drawables = getCompoundDrawablesRelative();
@@ -361,7 +353,7 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
             tintDrawable(drawable);
         }
 
-        setCompoundDrawablesInCompatibility();
+        compatCompoundDrawablesWithIntrinsicBounds();
     }
 
     @Override
@@ -417,7 +409,7 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
             return;
 
         this.hideDrawable = hideDrawable;
-        setCompoundDrawablesInCompatibility();
+        compatCompoundDrawablesWithIntrinsicBounds();
     }
 
     @Override
@@ -438,7 +430,7 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
     protected void drawableStateChanged() {
         super.drawableStateChanged();
 
-        if (isTintDrawableInTextColor) {
+        if (isTintDrawableInTextColor || mDrawableCompatColor != 0) {
             Drawable[] drawables = getCompoundDrawablesInCompatibility();
 
             boolean needRefresh = false;
@@ -457,6 +449,11 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * When {@link #hideDrawable} set to true, a {@link InvisibleDrawable} will be created as a place
+     * holder, which can make sure that the bounds of the {@code TextView} will not change.
+     */
     private static class InvisibleDrawable extends Drawable {
 
         private Rect mRect = new Rect();
@@ -498,82 +495,104 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     public static class CompoundDrawableConfigBuilder {
 
-        private VectorCompatTextView mTextView;
+        private VectorCompatTextView mVectorCompatTextView;
 
-        private Drawable mDrawableLeft_, mDrawableTop_, mDrawableRight_, mDrawableBottom_;
-        private boolean isTintDrawableInTextColor_;
-        private int mDrawableColor_;
-        private boolean isDrawableAdjustTextWidth_;
-        private boolean isDrawableAdjustTextHeight_;
-        private boolean isDrawableAdjustViewWidth_;
-        private boolean isDrawableAdjustViewHeight_;
-        private int mDrawableWidth_;
-        private int mDrawableHeight_;
-
-        public CompoundDrawableConfigBuilder(@NonNull VectorCompatTextView textView) {
-            mTextView = textView;
+        public CompoundDrawableConfigBuilder(@NonNull VectorCompatTextView vectorCompatTextView) {
+            mVectorCompatTextView = vectorCompatTextView;
         }
 
-        public CompoundDrawableConfigBuilder setCompoundDrawables(Drawable l, Drawable t, Drawable r, Drawable b) {
-            mDrawableLeft_ = l;
-            mDrawableTop_ = t;
-            mDrawableRight_ = r;
-            mDrawableBottom_ = b;
+        public CompoundDrawableConfigBuilder setCompoundDrawables(Drawable start, Drawable top, Drawable end, Drawable bottom) {
+            mVectorCompatTextView.mDrawableStart = start;
+            mVectorCompatTextView.mDrawableTop = top;
+            mVectorCompatTextView.mDrawableEnd = end;
+            mVectorCompatTextView.mDrawableBottom = bottom;
+            return this;
+        }
+
+        public CompoundDrawableConfigBuilder setDrawableStart(Drawable start) {
+            mVectorCompatTextView.mDrawableStart = start;
+            return this;
+        }
+
+        public CompoundDrawableConfigBuilder setDrawableTop(Drawable top) {
+            mVectorCompatTextView.mDrawableTop = top;
+            return this;
+        }
+
+        public CompoundDrawableConfigBuilder setDrawableEnd(Drawable end) {
+            mVectorCompatTextView.mDrawableEnd = end;
+            return this;
+        }
+
+        public CompoundDrawableConfigBuilder setDrawableBottom(Drawable bottom) {
+            mVectorCompatTextView.mDrawableBottom = bottom;
+            return this;
+        }
+
+        public CompoundDrawableConfigBuilder setDrawableStart(@DrawableRes int startRes) {
+            setDrawableStart(ContextCompat.getDrawable(mVectorCompatTextView.getContext(), startRes));
+            return this;
+        }
+
+        public CompoundDrawableConfigBuilder setDrawableTop(@DrawableRes int topRes) {
+            setDrawableTop(ContextCompat.getDrawable(mVectorCompatTextView.getContext(), topRes));
+            return this;
+        }
+
+        public CompoundDrawableConfigBuilder setDrawableEnd(@DrawableRes int endRes) {
+            setDrawableEnd(ContextCompat.getDrawable(mVectorCompatTextView.getContext(), endRes));
+            return this;
+        }
+
+        public CompoundDrawableConfigBuilder setDrawableBottom(@DrawableRes int bottomRes) {
+            setDrawableBottom(ContextCompat.getDrawable(mVectorCompatTextView.getContext(), bottomRes));
             return this;
         }
 
         public CompoundDrawableConfigBuilder tintDrawableInTextColor() {
-            isTintDrawableInTextColor_ = true;
+            mVectorCompatTextView.isTintDrawableInTextColor = true;
             return this;
         }
 
         public CompoundDrawableConfigBuilder setDrawableColor(@ColorInt int color) {
-            mDrawableColor_ = color;
+            mVectorCompatTextView.mDrawableCompatColor = color;
             return this;
         }
 
         public CompoundDrawableConfigBuilder drawableWidthAdjustTextWidth() {
-            isDrawableAdjustTextWidth_ = true;
+            mVectorCompatTextView.isDrawableAdjustTextWidth = true;
             return this;
         }
 
         public CompoundDrawableConfigBuilder drawableHeightAdjustTextHeight() {
-            isDrawableAdjustTextHeight_ = true;
+            mVectorCompatTextView.isDrawableAdjustTextHeight = true;
             return this;
         }
 
         public CompoundDrawableConfigBuilder drawableWidthAdjustViewWidth() {
-            isDrawableAdjustViewWidth_ = true;
+            mVectorCompatTextView.isDrawableAdjustViewWidth = true;
             return this;
         }
 
         public CompoundDrawableConfigBuilder drawableHeightAdjustViewHeight() {
-            isDrawableAdjustViewHeight_ = true;
+            mVectorCompatTextView.isDrawableAdjustViewHeight = true;
             return this;
         }
 
         public CompoundDrawableConfigBuilder setDrawableWidth(int widthInDp) {
-            mDrawableWidth_ = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, widthInDp,
-                    Resources.getSystem().getDisplayMetrics());
+            mVectorCompatTextView.mDrawableWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    widthInDp, Resources.getSystem().getDisplayMetrics());
             return this;
         }
 
         public CompoundDrawableConfigBuilder setDrawableHeight(int heightInDp) {
-            mDrawableHeight_ = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, heightInDp,
-                    Resources.getSystem().getDisplayMetrics());
+            mVectorCompatTextView.mDrawableHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                    heightInDp, Resources.getSystem().getDisplayMetrics());
             return this;
         }
 
         public void build() {
-            mTextView.isTintDrawableInTextColor = isTintDrawableInTextColor_;
-            mTextView.mDrawableCompatColor = mDrawableColor_;
-            mTextView.isDrawableAdjustTextWidth = isDrawableAdjustTextWidth_;
-            mTextView.isDrawableAdjustTextHeight = isDrawableAdjustTextHeight_;
-            mTextView.isDrawableAdjustViewWidth = isDrawableAdjustViewWidth_;
-            mTextView.isDrawableAdjustViewHeight = isDrawableAdjustViewHeight_;
-            mTextView.mDrawableWidth = mDrawableWidth_;
-            mTextView.mDrawableHeight = mDrawableHeight_;
-            mTextView.behaveDrawables(mDrawableLeft_, mDrawableTop_, mDrawableRight_, mDrawableBottom_);
+            mVectorCompatTextView.behaveDrawables();
         }
     }
 }
