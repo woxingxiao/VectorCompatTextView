@@ -36,8 +36,8 @@
             <com.xw.repo.VectorCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
                 android:text="微博"
@@ -45,10 +45,11 @@
                 app:drawableLeftCompat="@drawable/svg_ic_weibo"/>
 
             <com.xw.repo.VectorCompatTextView
+                android:id="@+id/tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
                 android:text="微信"
@@ -58,8 +59,8 @@
             <com.xw.repo.VectorCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
                 android:text="twitter"
@@ -70,8 +71,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp"
             android:text="drawable top, tint drawable in text color"/>
 
         <LinearLayout
@@ -80,8 +81,8 @@
             android:background="@drawable/shape_stroke_bg_gray"
             android:gravity="bottom"
             android:orientation="horizontal"
-            android:paddingBottom="4dp"
-            android:paddingTop="2dp">
+            android:paddingTop="2dp"
+            android:paddingBottom="4dp">
 
             <com.xw.repo.VectorCompatTextView
                 android:layout_width="match_parent"
@@ -128,8 +129,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp"
             android:text="drawable right, tint drawable in text color"/>
 
         <com.xw.repo.VectorCompatTextView
@@ -146,8 +147,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp"
             android:text="drawable bottom, tint drawable in text color"/>
 
         <com.xw.repo.VectorCompatTextView
@@ -164,8 +165,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp"
             android:text="drawable adjusts text width and height"/>
 
         <LinearLayout
@@ -187,8 +188,8 @@
             <com.xw.repo.VectorCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
                 android:text="GitHub"
@@ -199,8 +200,8 @@
             <com.xw.repo.VectorCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
                 android:text="你好"
@@ -212,12 +213,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp"
             android:text="custom drawable width or height"/>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal">
@@ -230,57 +231,72 @@
                 android:text="GitHub"
                 android:textSize="18sp"
                 app:drawableLeftCompat="@drawable/svg_ic_github"
-                app:drawableWidth="48dp"/>
+                app:drawableWidth="40dp"/>
 
             <com.xw.repo.VectorCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
                 android:text="GitHub"
                 android:textSize="18sp"
-                app:drawableHeight="36dp"
+                app:drawableHeight="16dp"
                 app:drawableLeftCompat="@drawable/svg_ic_github"/>
 
             <com.xw.repo.VectorCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:drawablePadding="4dp"
                 android:gravity="center_vertical"
                 android:text="Android"
                 android:textSize="18sp"
-                app:drawableHeight="32dp"
+                app:drawableHeight="40dp"
                 app:drawableLeftCompat="@mipmap/ic_launcher"
                 app:drawableWidth="24dp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal">
 
             <com.xw.repo.VectorCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:drawablePadding="4dp"
                 android:text="评论"
                 android:textColor="@color/color_gray"
                 app:drawableAdjustTextHeight="true"
                 app:drawableLeftCompat="@drawable/shape_rect_solid_red"
                 app:drawableWidth="4dp"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp"
+            android:text="checked state"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text="click them →"
+                android:textColor="@color/colorPrimary"/>
 
             <com.xw.repo.VectorCompatTextView
-                android:id="@+id/checkable_text_view"
+                android:id="@+id/checkable_text_view1"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:checked="true"
                 android:drawablePadding="4dp"
                 android:gravity="center"
@@ -290,12 +306,72 @@
                 app:drawableBottomCompat="@drawable/selector_drawable_tab"
                 app:drawableHeight="2dp"/>
 
-            <TextView
+            <com.xw.repo.VectorCompatTextView
+                android:id="@+id/checkable_text_view2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
-                android:text="← click it"/>
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:text="Day Mode"
+                android:textColor="@drawable/selector_text_color_day_night_mode"
+                app:drawableEndCompat="@drawable/selector_drawable_day_night_mode"
+                app:tintDrawableInTextColor="true"/>
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp"
+            android:text="RTL, visibility of drawable"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp">
+
+            <com.xw.repo.VectorCompatTextView
+                android:id="@+id/demo_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:text="Name"
+                android:textSize="18sp"
+                app:drawableStartCompat="@drawable/svg_ic_user"
+                app:hideDrawable="true"/>
+
+            <RadioGroup
+                android:id="@+id/radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="120dp"
+                android:layout_marginLeft="120dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/boy_rb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Boy"/>
+
+                <RadioButton
+                    android:id="@+id/girl_rb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:text="Girl"/>
+
+                <RadioButton
+                    android:id="@+id/reset_rb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:text="Reset"/>
+            </RadioGroup>
+        </FrameLayout>
     </LinearLayout>
 </ScrollView>
