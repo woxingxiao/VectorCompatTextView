@@ -339,10 +339,14 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
         } else {
             drawables = getCompoundDrawablesRelative();
         }
-        mDrawableStart = drawables[0];
-        mDrawableTop = drawables[1];
-        mDrawableEnd = drawables[2];
-        mDrawableBottom = drawables[3];
+        if (!(drawables[0] instanceof InvisibleDrawable))
+            mDrawableStart = drawables[0];
+        if (!(drawables[1] instanceof InvisibleDrawable))
+            mDrawableTop = drawables[1];
+        if (!(drawables[2] instanceof InvisibleDrawable))
+            mDrawableEnd = drawables[2];
+        if (!(drawables[3] instanceof InvisibleDrawable))
+            mDrawableBottom = drawables[3];
 
         return drawables;
     }
