@@ -2,19 +2,13 @@
 [![API](https://img.shields.io/badge/API-9%2B-blue.svg?style=flat)](https://android-arsenal.com/api?level=9)
 [![License](http://img.shields.io/badge/license-MIT-green.svg?style=flat)]()
 # VectorCompatTextView
-- Compatible VectorDrawable(svg)
-- flexible size setting for CompoundDrawable
-- tint drawables with color
-- support StateListDrawable(mostly checked_state)
 
----
-- 适配VectorDrawable矢量图（svg）
-- 灵活地设置CompoundDrawable的尺寸大小
-- 为CompoundDrawable着色
-- 支持StateListDrawable（主要是checked_state）
+With this multifunctional TextView, the VectorDrawable resources can be set as CompoundDrawables, furthermore, the majority of scenarios to manipulate CompoundDrawables have been supported, such as checked state, color tinting/setting, custom size setting, visibility, RTL, etc. AndroidX version is available.
 
-# Screenshot
-![demo5](https://github.com/woxingxiao/VectorCompatTextView/blob/master/screenshot/demo5.jpg)
+这个炒鸡强大的库可以让你轻松将VectorDrawable资源设置为CompoundDrawable，并且支持大多数操控CompoundDrawable的情景，如：checked状态，颜色设置或着色，自定义宽高，隐藏或显示，RTL布局等等（当然常规资源如png/jpg，Drawable的子类等更不在话下）。有AndroidX版本。
+
+## Screenshot
+![demo5](https://github.com/woxingxiao/VectorCompatTextView/blob/master/screenshot/demo5.jpg) ![demo6](https://github.com/woxingxiao/VectorCompatTextView/blob/master/screenshot/demo6.gif)
 ## Download
 root project:`build.gradle`
 ```groovy
@@ -31,13 +25,18 @@ app:`build.gradle`
       ...
       defaultConfig {
           ...
-          vectorDrawables.useSupportLibrary = true  // necessarily
+          vectorDrawables.useSupportLibrary = true  // essential
       }
   ...
 
   dependencies {
-     // e.g. compile 'com.github.woxingxiao:VectorCompatTextView:2.3'
-     compile 'com.github.woxingxiao:VectorCompatTextView:${LATEST_VERSION}'
+     // Support
+     // e.g. implementation 'com.github.woxingxiao:VectorCompatTextView:2.7'
+     implementation 'com.github.woxingxiao:VectorCompatTextView:${LATEST_VERSION}'
+
+     // AndroidX
+     // e.g. implementation 'com.github.woxingxiao:VectorCompatTextView:2.7-androidx'
+     implementation 'com.github.woxingxiao:VectorCompatTextView:${LATEST_VERSION}-androidx'
   }
 ```
 ## Usage
@@ -96,7 +95,6 @@ app:`build.gradle`
     app:drawableBottomCompat="@drawable/selector_drawable_tab"
     app:drawableHeight="2dp"/>
 ```
-**Check the Demo for complete usage.**
-
+[**Check the Demo for complete usage.**](https://github.com/woxingxiao/VectorCompatTextView/blob/androidx/app/src/main/java/com/xw/sample/vectorcompattextview/MainActivity.kt)
 # LICENSE
 [MIT](https://github.com/woxingxiao/VectorCompatTextView/blob/master/LICENSE)
