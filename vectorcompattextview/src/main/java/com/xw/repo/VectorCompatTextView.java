@@ -103,7 +103,7 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
             }
 
             isTintDrawableInTextColor = a.getBoolean(R.styleable.VectorCompatTextView_tintDrawableInTextColor, false);
-            mDrawableCompatColor = a.getColor(R.styleable.VectorCompatTextView_drawableCompatColor, 0);
+            mDrawableCompatColor = a.getColor(R.styleable.VectorCompatTextView_drawableCompatColor, -1);
             isDrawableAdjustTextWidth = a.getBoolean(R.styleable.VectorCompatTextView_drawableAdjustTextWidth, false);
             isDrawableAdjustTextHeight = a.getBoolean(R.styleable.VectorCompatTextView_drawableAdjustTextHeight, false);
             isDrawableAdjustViewWidth = a.getBoolean(R.styleable.VectorCompatTextView_drawableAdjustViewWidth, false);
@@ -194,7 +194,7 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
         if (drawable != null) {
             if (isTintDrawableInTextColor) {
                 DrawableCompat.setTint(drawable.mutate(), getCurrentTextColor());
-            } else if (mDrawableCompatColor != 0) {
+            } else if (mDrawableCompatColor >= 0) {
                 DrawableCompat.setTint(drawable.mutate(), mDrawableCompatColor);
             }
         }
@@ -434,7 +434,7 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
     protected void drawableStateChanged() {
         super.drawableStateChanged();
 
-        if (isTintDrawableInTextColor || mDrawableCompatColor != 0) {
+        if (isTintDrawableInTextColor || mDrawableCompatColor >= 0) {
             Drawable[] drawables = getCompoundDrawablesInCompatibility();
 
             boolean needRefresh = false;
@@ -460,7 +460,7 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
      */
     private static class InvisibleDrawable extends Drawable {
 
-        private Rect mRect = new Rect();
+        private final Rect mRect = new Rect();
 
         void updateBounds(Rect rect) {
             if (rect != null) {
@@ -499,7 +499,7 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     public static class CompoundDrawableConfigBuilder {
 
-        private VectorCompatTextView mVectorCompatTextView;
+        private final VectorCompatTextView mVectorCompatTextView;
 
         public CompoundDrawableConfigBuilder(@NonNull VectorCompatTextView vectorCompatTextView) {
             mVectorCompatTextView = vectorCompatTextView;

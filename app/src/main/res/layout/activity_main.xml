@@ -286,14 +286,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
+                android:textSize="12sp"
                 android:text="click them →"
                 android:textColor="@color/colorPrimary"/>
 
             <com.xw.repo.VectorCompatTextView
                 android:id="@+id/checkable_text_view1"
-                android:layout_width="120dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
@@ -302,7 +303,7 @@
                 android:gravity="center"
                 android:text="SELECTED TAB"
                 android:textColor="@drawable/selector_text_color_tab"
-                app:drawableAdjustViewWidth="true"
+                app:drawableAdjustTextWidth="true"
                 app:drawableBottomCompat="@drawable/selector_drawable_tab"
                 app:drawableHeight="2dp"/>
 
