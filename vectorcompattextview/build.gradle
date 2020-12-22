@@ -6,8 +6,8 @@ android {
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 29
-        versionCode 15
-        versionName "2.7-androidx"
+        versionCode 16
+        versionName "2.8-androidx"
 
     }
     buildTypes {
@@ -19,5 +19,5 @@ android {
 }
 
 dependencies {
-    compileOnly 'androidx.appcompat:appcompat:1.1.0'
+    compileOnly 'androidx.appcompat:appcompat:1.2.0'
 }
