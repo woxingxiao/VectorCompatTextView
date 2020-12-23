@@ -316,9 +316,8 @@
                 android:drawablePadding="8dp"
                 android:gravity="center"
                 android:text="Day Mode"
-                android:textColor="@drawable/selector_text_color_day_night_mode"
-                app:drawableEndCompat="@drawable/selector_drawable_day_night_mode"
-                app:tintDrawableInTextColor="true"/>
+                app:drawableCompatTint="@drawable/selector_text_color_day_night_mode"
+                app:drawableEndCompat="@drawable/selector_drawable_day_night_mode" />
         </LinearLayout>
 
         <TextView

@@ -1,9 +1,11 @@
 package com.xw.repo;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
@@ -36,8 +38,10 @@ import com.xw.repo.vectorcompattextview.R;
  */
 public class VectorCompatTextView extends AppCompatCheckedTextView {
 
+    private static final int DEFAULT_COLOR = Color.BLACK;
+
     private boolean isTintDrawableInTextColor;
-    private int mDrawableCompatColor;
+    private ColorStateList mDrawableCompatTint;
     private boolean isDrawableAdjustTextWidth;
     private boolean isDrawableAdjustTextHeight;
     private boolean isDrawableAdjustViewWidth;
@@ -103,7 +107,14 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
             }
 
             isTintDrawableInTextColor = a.getBoolean(R.styleable.VectorCompatTextView_tintDrawableInTextColor, false);
-            mDrawableCompatColor = a.getColor(R.styleable.VectorCompatTextView_drawableCompatColor, -1);
+            if (a.hasValue(R.styleable.VectorCompatTextView_drawableCompatTint)) {
+                mDrawableCompatTint = a.getColorStateList(R.styleable.VectorCompatTextView_drawableCompatTint);
+            } else if (a.hasValue(R.styleable.VectorCompatTextView_drawableCompatColor)) {
+                // @deprecated
+                // Use drawableCompatTint instead.
+                int color = a.getColor(R.styleable.VectorCompatTextView_drawableCompatColor, DEFAULT_COLOR);
+                mDrawableCompatTint = ColorStateList.valueOf(color);
+            }
             isDrawableAdjustTextWidth = a.getBoolean(R.styleable.VectorCompatTextView_drawableAdjustTextWidth, false);
             isDrawableAdjustTextHeight = a.getBoolean(R.styleable.VectorCompatTextView_drawableAdjustTextHeight, false);
             isDrawableAdjustViewWidth = a.getBoolean(R.styleable.VectorCompatTextView_drawableAdjustViewWidth, false);
@@ -192,10 +203,11 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
 
     private void tintDrawable(Drawable drawable) {
         if (drawable != null) {
+            Drawable wrapped = DrawableCompat.wrap(drawable.mutate());
             if (isTintDrawableInTextColor) {
-                DrawableCompat.setTint(drawable.mutate(), getCurrentTextColor());
-            } else if (mDrawableCompatColor >= 0) {
-                DrawableCompat.setTint(drawable.mutate(), mDrawableCompatColor);
+                DrawableCompat.setTint(wrapped, getCurrentTextColor());
+            } else if (mDrawableCompatTint != null) {
+                DrawableCompat.setTintList(wrapped, mDrawableCompatTint);
             }
         }
     }
@@ -392,15 +404,28 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
         tintCompoundDrawables();
     }
 
-    public int getDrawableCompatColor() {
-        return mDrawableCompatColor;
+    public ColorStateList getDrawableCompatTint() {
+        return mDrawableCompatTint;
     }
 
-    public void setDrawableCompatColor(@ColorInt int drawableCompatColor) {
-        if (mDrawableCompatColor == drawableCompatColor)
+    public void setDrawableCompatTint(ColorStateList colorStateList) {
+        if (mDrawableCompatTint == colorStateList)
             return;
 
-        mDrawableCompatColor = drawableCompatColor;
+        mDrawableCompatTint = colorStateList;
+        tintCompoundDrawables();
+    }
+
+    public int getDrawableCompatColor() {
+        return mDrawableCompatTint == null ? DEFAULT_COLOR : mDrawableCompatTint.getColorForState(getDrawableState(), DEFAULT_COLOR);
+    }
+
+    /**
+     * @deprecated Use {@link #setDrawableCompatTint} instead.
+     */
+    @Deprecated
+    public void setDrawableCompatColor(@ColorInt int color) {
+        mDrawableCompatTint = ColorStateList.valueOf(color);
         tintCompoundDrawables();
     }
 
@@ -434,7 +459,7 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
     protected void drawableStateChanged() {
         super.drawableStateChanged();
 
-        if (isTintDrawableInTextColor || mDrawableCompatColor >= 0) {
+        if (isTintDrawableInTextColor || mDrawableCompatTint != null) {
             Drawable[] drawables = getCompoundDrawablesInCompatibility();
 
             boolean needRefresh = false;
@@ -558,8 +583,17 @@ public class VectorCompatTextView extends AppCompatCheckedTextView {
             return this;
         }
 
+        public CompoundDrawableConfigBuilder setDrawableTint(ColorStateList colorStateList) {
+            mVectorCompatTextView.mDrawableCompatTint = colorStateList;
+            return this;
+        }
+
+        /**
+         * @deprecated Use {@link #setDrawableTint} instead.
+         */
+        @Deprecated
         public CompoundDrawableConfigBuilder setDrawableColor(@ColorInt int color) {
-            mVectorCompatTextView.mDrawableCompatColor = color;
+            mVectorCompatTextView.mDrawableCompatTint = ColorStateList.valueOf(color);
             return this;
         }
 

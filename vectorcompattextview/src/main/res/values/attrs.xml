@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="VectorCompatTextView">
         <attr name="drawableStartCompat" format="reference"/>
@@ -8,7 +7,9 @@
         <attr name="drawableTopCompat" format="reference"/>
         <attr name="drawableBottomCompat" format="reference"/>
         <attr name="tintDrawableInTextColor" format="boolean"/>
+        <!-- @deprecated Use drawableCompatTint instead. -->
         <attr name="drawableCompatColor" format="color|reference"/>
+        <attr name="drawableCompatTint" format="color|reference"/>
         <attr name="drawableAdjustTextWidth" format="boolean"/>
         <attr name="drawableAdjustTextHeight" format="boolean"/>
         <attr name="drawableAdjustViewWidth" format="boolean"/>
